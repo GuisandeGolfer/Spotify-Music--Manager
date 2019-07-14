@@ -103,7 +103,7 @@ class App extends Component {
             onClick={() => {
               window.location = window.location.href.includes("localhost")
                 ? "http://localhost:8888/login"
-                : "https://spot-music-manager.herokuapp.com/";
+                : "https://spot-music-manager-backend.herokuapp.com/login";
             }}
           >
             Sign into Spotify
