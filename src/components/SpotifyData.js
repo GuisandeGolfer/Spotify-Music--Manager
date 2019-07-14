@@ -17,30 +17,27 @@ let playData = [
 ];
 
 class SpotifyData extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      serverData: {}
+      serverData: props.serverData
     };
-  }
-  componentDidMount() {
-    //This is where I will fetch the data from Spotify
   }
 
   render() {
-    const QueenSongs = songData.map(song => {
-      return [<input type="checkbox" />, <p key={song.id}>{song.name}</p>]; //you can return multiple JSX elements in an array and React un-wraps it
-    });
-    const playlists = playData.map(list => {
-      return [
-        <label key={list.id}>{list.name}</label>,
-        <p>{list.totalTime}</p>
-      ];
-    });
+    // const QueenSongs = songData.map(song => {
+    //   return [<input type="checkbox" />, <p key={song.id}>{song.name}</p>]; //you can return multiple JSX elements in an array and React un-wraps it
+    // });
+    // const playlists = playData.map(list => {
+    //   return [
+    //     <label key={list.id}>{list.name}</label>,
+    //     <p>{list.totalTime}</p>
+    //   ];
+    // });
     return (
       <div>
-        <SavedSongs songs={QueenSongs} />
-        <Playlist playlists={playlists} />
+        <SavedSongs songs={songData} />
+        <Playlist playlists={playData} />
       </div>
     );
   }
