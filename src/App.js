@@ -7,43 +7,98 @@ import "./App.css";
 class App extends Component {
   constructor() {
     super();
+    this._isMounted = false;
     this.state = {
+      isLoading: true,
       user: "",
-      device: "",
-      serverData: {}
+      accountType: "",
+      playlists: "",
+      userSavedSongs: ""
     };
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   componentDidMount() {
     let parsed = queryString.parse(window.location.search);
-    console.log(parsed);
     let accessToken = parsed.access_token;
-    //use fetch() with the access_token
-    fetch("https://api.spotify.com/v1/me", {
-      headers: {
-        Authorization: "Bearer " + accessToken
-      }
-    })
-      .then(response => response.json())
-      .then(json => console.log(json))
-      .catch(err => console.error(err));
+
+    if (accessToken) {
+      this._isMounted = true;
+
+      //use fetch() with the access_token
+      fetch("https://api.spotify.com/v1/me", {
+        headers: {
+          Authorization: "Bearer " + accessToken
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (this._isMounted) {
+            this.setState({
+              user: data.display_name,
+              accountType: data.product
+            });
+          }
+        });
+      fetch("https://api.spotify.com/v1/me/playlists", {
+        headers: { Authorization: "Bearer " + accessToken }
+      })
+        .then(response => response.json())
+        .then(data => {
+          this.setState({
+            playlists: data.items.map(item => {
+              const {
+                name,
+                tracks: { total }
+              } = item;
+              return {
+                name: name,
+                songCount: total,
+                imageUrl: item.images[0].url
+              };
+            })
+          });
+        });
+      fetch("https://api.spotify.com/v1/me/tracks", {
+        headers: {
+          Authorization: "Bearer " + accessToken
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          this.setState({
+            userSavedSongs: data.items.map(item => {
+              const {
+                track: { name }
+              } = item;
+              return {
+                name: name
+              };
+            })
+          });
+        });
+    }
   }
 
   render() {
-    const { user, device, serverData } = this.state;
+    const { user, accountType, playlists, userSavedSongs } = this.state;
     return (
       <div className="App">
         {user ? (
           <div>
-            <UserInfo username={user} device={device} />
-            <SpotifyData serverData={serverData} />
+            <UserInfo username={user} accountType={accountType} />
+
+            <SpotifyData playlists={playlists} songs={userSavedSongs} />
           </div>
         ) : (
           <button
             style={{
               padding: "20px",
-              "font-size": "50px",
-              "margin-top": "20px"
+              fontSize: "50px",
+              marginTop: "20px"
             }}
             onClick={() => (window.location = "http://localhost:8888/login")}
           >
