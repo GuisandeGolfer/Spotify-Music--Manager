@@ -19,7 +19,7 @@ function Playlist(props) {
     <div className="playlists">
       <p>Amount of Playlists</p>
       <h4>Top User Playlists</h4>
-      {songsToRender}
+      {props.playlists ? <div>{songsToRender}</div> : <h4>Loading...</h4>}
     </div>
   );
 }

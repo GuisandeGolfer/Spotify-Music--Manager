@@ -9,15 +9,19 @@ class SavedSongs extends Component {
   }
 
   render() {
-    const { songComponents } = this.state;
-
-    const songsToRender = songComponents.map(song => {
+    let arrayOfSongs = Array.from(this.state.songComponents); //find out how to take this out in SavedSongs.JS and Playlist.JS
+    let songsToRender = arrayOfSongs.map(song => {
       return [<h4>{song.name}</h4>, <input type="radio" />];
     });
     return (
       <div className="savedSongs">
         <h4>Top 50 Saved Songs</h4>
-        {songsToRender}
+        {this.state.songComponents ? (
+          <div>{songsToRender}</div>
+        ) : (
+          <h4>Loading...</h4>
+        )}
+
         <button>Submit</button>
       </div>
     );

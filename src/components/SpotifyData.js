@@ -11,16 +11,11 @@ class SpotifyData extends Component {
     };
   }
 
-  // componentDidMount() {
-  //   this.setState({ playlists: this.props.playlists, songs: this.props.songs });
-  // }
-
   render() {
-    const { playlists, songs } = this.state;
     return (
       <div>
-        <SavedSongs songs={songs} />
-        <Playlist playlists={playlists} />
+        <SavedSongs songs={this.state.songs} />
+        <Playlist playlists={this.state.playlists} />
       </div>
     );
   }

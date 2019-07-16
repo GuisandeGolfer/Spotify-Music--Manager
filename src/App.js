@@ -28,70 +28,74 @@ class App extends Component {
     if (accessToken) {
       this._isMounted = true;
 
-      //use fetch() with the access_token
-      fetch("https://api.spotify.com/v1/me", {
-        headers: {
-          Authorization: "Bearer " + accessToken
-        }
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (this._isMounted) {
-            this.setState({
-              user: data.display_name,
-              accountType: data.product
-            });
+      setTimeout(() => {
+        //use fetch() with the access_token
+        fetch("https://api.spotify.com/v1/me", {
+          headers: {
+            Authorization: "Bearer " + accessToken
           }
-        });
-      fetch("https://api.spotify.com/v1/me/playlists", {
-        headers: { Authorization: "Bearer " + accessToken }
-      })
-        .then(response => response.json())
-        .then(data => {
-          this.setState({
-            playlists: data.items.map(item => {
-              const {
-                name,
-                tracks: { total }
-              } = item;
-              return {
-                name: name,
-                songCount: total,
-                imageUrl: item.images[0].url
-              };
-            })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (this._isMounted) {
+              this.setState({
+                user: data.display_name,
+                accountType: data.product
+              });
+            }
           });
-        });
-      fetch("https://api.spotify.com/v1/me/tracks", {
-        headers: {
-          Authorization: "Bearer " + accessToken
-        }
-      })
-        .then(response => response.json())
-        .then(data => {
-          this.setState({
-            userSavedSongs: data.items.map(item => {
-              const {
-                track: { name }
-              } = item;
-              return {
-                name: name
-              };
-            })
+        fetch("https://api.spotify.com/v1/me/playlists", {
+          headers: { Authorization: "Bearer " + accessToken }
+        })
+          .then(response => response.json())
+          .then(data => {
+            this.setState({
+              playlists: data.items.map(item => {
+                const {
+                  name,
+                  tracks: { total }
+                } = item;
+                return {
+                  name: name,
+                  songCount: total,
+                  imageUrl: item.images[0].url
+                };
+              })
+            });
           });
-        });
+        fetch("https://api.spotify.com/v1/me/tracks", {
+          headers: {
+            Authorization: "Bearer " + accessToken
+          }
+        })
+          .then(response => response.json())
+          .then(data => {
+            this.setState({
+              userSavedSongs: data.items.map(item => {
+                return {
+                  name: item.track.name
+                };
+              })
+            });
+          });
+      }, 1200);
     }
   }
 
   render() {
-    const { user, accountType, playlists, userSavedSongs } = this.state;
     return (
       <div className="App">
-        {user ? (
+        {this.state.user ? (
           <div>
-            <UserInfo username={user} accountType={accountType} />
+            <UserInfo
+              username={this.state.user}
+              accountType={this.state.accountType}
+            />
 
-            <SpotifyData playlists={playlists} songs={userSavedSongs} />
+            <SpotifyData
+              playlists={this.state.playlists}
+              songs={this.state.userSavedSongs}
+            />
           </div>
         ) : (
           <button
