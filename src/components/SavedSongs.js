@@ -1,31 +1,30 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+import { MyContext } from "./MyProvider.js";
 
-class SavedSongs extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      songComponents: props.songs
-    };
-  }
-
-  render() {
-    let arrayOfSongs = Array.from(this.state.songComponents); //find out how to take this out in SavedSongs.JS and Playlist.JS
-    let songsToRender = arrayOfSongs.map(song => {
-      return [<h4>{song.name}</h4>, <input type="radio" />];
-    });
-    return (
-      <div className="savedSongs">
-        <h4>Top 50 Saved Songs</h4>
-        {this.state.songComponents ? (
-          <div>{songsToRender}</div>
-        ) : (
-          <h4>Loading...</h4>
-        )}
-
-        <button>Submit</button>
-      </div>
-    );
-  }
+function SavedSongs() {
+  const [songs, setSongs] = useState("Songs");
+  return (
+    <div className="savedSongs">
+      <h4>Top 50 Saved Songs</h4>
+      <MyContext.Consumer>
+        {(
+          context //destructure the context object later.
+        ) =>
+          context.userSavedSongs ? (
+            <div>
+              {context.userSavedSongs}
+              {songs}
+            </div>
+          ) : (
+            <div>
+              <p>"OOOps</p>
+            </div>
+          )
+        }
+      </MyContext.Consumer>
+      <button onClick={() => setSongs(songs + " ANother OnE")}>Submit</button>
+    </div>
+  );
 }
 
 export default SavedSongs;

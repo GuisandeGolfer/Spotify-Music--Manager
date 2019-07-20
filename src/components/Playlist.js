@@ -1,27 +1,20 @@
 import React from "react";
+import { MyContext } from "./MyProvider.js";
 
-function Playlist(props) {
-  const styles = {
-    padding: "5px"
-  };
-
-  const playData = Array.from(props.playlists);
-  const songsToRender = playData.map(song => {
-    return [
-      <div style={{ border: "3px solid lightgreen", paddingTop: "4px" }}>
-        ,<label style={styles}>{song.name}</label>,
-        <img height="300" width="300" alt="album cover" src={song.imageUrl} />,
-        <p style={styles}>Number of Songs: {song.songCount}</p>,
-      </div>
-    ];
-  });
+function Playlist() {
   return (
     <div className="playlists">
-      <p>Amount of Playlists</p>
       <h4>Top User Playlists</h4>
-      {props.playlists ? <div>{songsToRender}</div> : <h4>Loading...</h4>}
+      <MyContext.Consumer>
+        {context =>
+          context.playlists ? (
+            <div>{context.playlists}</div>
+          ) : (
+            <h4>Loading...</h4>
+          )
+        }
+      </MyContext.Consumer>
     </div>
   );
 }
-
 export default Playlist;
