@@ -10,12 +10,14 @@ function App() {
   let preParseToken = window.location.search;
   let access_token = queryString.parse(preParseToken).access_token;
   return (
-    <div className="App">
+    <div>
       {access_token ? (
         <MyProvider>
           <UserInfo />
-          <SavedSongs />
-          <Playlist />
+          <div className="App-flex-container">
+            <SavedSongs />
+            <Playlist />
+          </div>
         </MyProvider>
       ) : (
         <button

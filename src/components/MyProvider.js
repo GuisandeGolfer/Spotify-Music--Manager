@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import queryString from "query-string";
+import { Card, Accordion, Button } from "react-bootstrap";
 
 export const MyContext = React.createContext();
 
@@ -52,34 +53,65 @@ export default class MyProvider extends Component {
           headers: { Authorization: "Bearer " + accessToken }
         });
         const songJSON = await songData.json();
-
+        //console.log(songJSON); // this still works tho. here for object structure digging.
         spot_object.userSavedSongs = songJSON.items.map(item => {
           return {
             name: item.track.name
+            //artist: item.track.artists[0].name
           };
         });
-
-        //these work fine here.
-        const songComponents = spot_object.userSavedSongs.map(song => [
-          <p>{song.name}</p>,
-          <input type="radio" />
-        ]);
+        //{song.artist}
+        //now it is breaking here because of react-bootstrap components
+        const songComponents = spot_object.userSavedSongs.map(song => {
+          return [
+            <Card>
+              <Card.Header>{song.name}</Card.Header>
+              <Accordion.Toggle
+                style={{ float: "left" }}
+                as={Button}
+                variant="link"
+                eventKey="0"
+              >
+                Song Info
+              </Accordion.Toggle>
+              <Accordion.Collapse eventKey="0">
+                <Card.Body>By: Artist</Card.Body>
+              </Accordion.Collapse>
+            </Card>
+          ];
+        });
         const playlistComponents = spot_object.playlists.map(song => {
           return [
-            <div style={{ border: "3px solid lightgreen", paddingTop: "4px" }}>
-              ,<label style={{ padding: "5px" }}>{song.name}</label>,
-              <img
-                height="300"
-                width="300"
-                alt="album cover"
-                src={song.imageUrl}
-              />
-              ,
-              <p style={{ padding: "5px" }}>
-                Number of Songs: {song.songCount}
-              </p>
-              ,
-            </div>
+            <Accordion>
+              <Card style={{ width: "18rem" }}>
+                <Card.Title
+                  style={{
+                    padding: "10px",
+                    textAlign: "center",
+                    border: "5px solid lightgreen"
+                  }}
+                >
+                  {song.name}
+                </Card.Title>
+                <Card.Img
+                  variant="top"
+                  alt="album cover"
+                  src={song.imageUrl}
+                  height="286"
+                  width="180"
+                />
+                <Accordion.Toggle as={Button} variant="link" eventKey="1">
+                  More Info
+                </Accordion.Toggle>
+                <Accordion.Collapse eventKey="1">
+                  <Card.Body
+                    style={{ padding: "5px", display: "inline-block" }}
+                  >
+                    Number of Songs: {song.songCount}
+                  </Card.Body>
+                </Accordion.Collapse>
+              </Card>
+            </Accordion>
           ];
         });
 

@@ -1,10 +1,6 @@
-.App {
-  text-align: center;
-}
-
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: 30vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,17 +9,35 @@
   color: white;
 }
 
-.savedSongs {
-  width: 50%;
-  float: left;
-}
-
 .description {
   border: 2px solid lightgreen;
   padding: 10px;
 }
 
-.playlists {
-  width: 50%;
-  float: right;
+.App-flex-container {
+  margin-top: 18%;
+  display: flex;
+  flex-direction: row;
+}
+
+.playlists-flex-container {
+  flex: 50%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  margin-right: 5%;
+}
+
+.song-flex-container {
+  flex: 50%;
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 5%;
+  flex-direction: column;
+}
+/* Have to change the ruleset below because they won't be divs any more */
+
+div > img {
+  display: inline-grid;
+  margin: 20px;
 }

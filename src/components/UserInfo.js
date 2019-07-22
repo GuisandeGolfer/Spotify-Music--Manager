@@ -1,4 +1,5 @@
 import React from "react";
+import { Jumbotron } from "react-bootstrap";
 import { MyContext } from "./MyProvider.js";
 
 function UserInfo() {
@@ -7,7 +8,7 @@ function UserInfo() {
       {context => {
         const { user, accountType } = context;
         return (
-          <div>
+          <Jumbotron className="App-header">
             <h2>
               Welcome {user} on a {accountType} account.
             </h2>
@@ -15,7 +16,7 @@ function UserInfo() {
               Spot-Music-Manager will help you organize your saved songs into
               playlists of your choosing.
             </p>
-          </div>
+          </Jumbotron>
         );
       }}
     </MyContext.Consumer>

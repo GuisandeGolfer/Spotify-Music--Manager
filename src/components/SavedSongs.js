@@ -1,28 +1,33 @@
-import React, { useState } from "react";
+import React from "react";
+import { Button, Accordion, Card } from "react-bootstrap";
 import { MyContext } from "./MyProvider.js";
 
 function SavedSongs() {
-  const [songs, setSongs] = useState("Songs");
+  //const [hFourText, setText] = useState("Top 50 Saved Songs");
+  //onClick={() => setText(hFourText + " 1")}
   return (
-    <div className="savedSongs">
-      <h4>Top 50 Saved Songs</h4>
+    <div className="song-flex-container">
       <MyContext.Consumer>
         {(
           context //destructure the context object later.
         ) =>
           context.userSavedSongs ? (
-            <div>
-              {context.userSavedSongs}
-              {songs}
-            </div>
+            <React.Fragment>
+              <Accordion className="song-flex-container">
+                <Card>
+                  <h4 className="SongsHeading">"Top 50 Saved Songs"</h4>
+                  {context.userSavedSongs}
+                </Card>
+                <Button variant="success">Submit</Button>
+              </Accordion>
+            </React.Fragment>
           ) : (
             <div>
-              <p>"OOOps</p>
+              <p>"OOOps"</p>
             </div>
           )
         }
       </MyContext.Consumer>
-      <button onClick={() => setSongs(songs + " ANother OnE")}>Submit</button>
     </div>
   );
 }
