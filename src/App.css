@@ -24,8 +24,8 @@
   flex: 50%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
-  margin-right: 5%;
+  margin-left: 5%;
+  flex-direction: column;
 }
 
 .song-flex-container {

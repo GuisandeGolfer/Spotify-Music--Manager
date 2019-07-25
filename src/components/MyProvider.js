@@ -56,7 +56,8 @@ export default class MyProvider extends Component {
         //console.log(songJSON); // this still works tho. here for object structure digging.
         spot_object.userSavedSongs = songJSON.items.map(item => {
           return {
-            name: item.track.name
+            name: item.track.name,
+            id: item.track.id
             //artist: item.track.artists[0].name
           };
         });
@@ -64,17 +65,17 @@ export default class MyProvider extends Component {
         //now it is breaking here because of react-bootstrap components
         const songComponents = spot_object.userSavedSongs.map(song => {
           return [
-            <Card>
+            <Card key={song.id}>
               <Card.Header>{song.name}</Card.Header>
               <Accordion.Toggle
                 style={{ float: "left" }}
                 as={Button}
                 variant="link"
-                eventKey="0"
+                eventKey={song.id}
               >
                 Song Info
               </Accordion.Toggle>
-              <Accordion.Collapse eventKey="0">
+              <Accordion.Collapse eventKey={song.id}>
                 <Card.Body>By: Artist</Card.Body>
               </Accordion.Collapse>
             </Card>
@@ -82,8 +83,8 @@ export default class MyProvider extends Component {
         });
         const playlistComponents = spot_object.playlists.map(song => {
           return [
-            <Accordion>
-              <Card style={{ width: "18rem" }}>
+            <Accordion style={{ padding: "10px" }} key={song.key}>
+              <Card style={{ width: "18rem", padding: "10px" }}>
                 <Card.Title
                   style={{
                     padding: "10px",
